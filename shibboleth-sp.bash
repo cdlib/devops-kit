@@ -140,11 +140,9 @@ Unpack $THE_TARBALL
 # shellcheck disable=SC2086
 Build $THE_DIRNAME $THE_OPTIONS
 
-exit
-
-# http://apache.mirrors.tds.net/xerces/c/3/sources/xerces-c-3.1.4.tar.gz
+# http://apache.mirrors.tds.net/xerces/c/3/sources/xerces-c-3.2.2.tar.gz
 THE_URLPATH=http://apache.mirrors.tds.net/xerces/c/3/sources
-THE_DIRNAME=xerces-c-3.1.4
+THE_DIRNAME=xerces-c-3.2.2
 THE_TARBALL=${THE_DIRNAME}.tar.gz
 THE_OPTIONS="--enable-netaccessor-socket"
 Download $THE_URLPATH/$THE_TARBALL
@@ -152,6 +150,8 @@ Unpack $THE_TARBALL
 # I want word splitting on THE_OPTIONS, so disable shell check.
 # shellcheck disable=SC2086
 Build $THE_DIRNAME $THE_OPTIONS
+
+exit
 
 # http://mirrors.gigenet.com/apache/santuario/c-library/xml-security-c-1.7.2.tar.gz
 THE_URLPATH=http://mirrors.gigenet.com/apache/santuario/c-library
