@@ -115,7 +115,6 @@ Unpack $THE_TARBALL
 # shellcheck disable=SC2086
 Build $THE_DIRNAME $THE_OPTIONS
 
-
 # https://www.zlib.net/zlib-1.2.11.tar.gz
 THE_URLPATH=https://www.zlib.net
 THE_DIRNAME=zlib-1.2.11
@@ -125,6 +124,21 @@ Download $THE_URLPATH/$THE_TARBALL
 Unpack $THE_TARBALL
 Build $THE_DIRNAME $THE_OPTIONS
 
+# shibboleth.net suggests building openssl here
+# but it's already done?
+
+# https://curl.haxx.se/download/curl-7.64.0.tar.gz
+# Why is curl built --with-openssl=/usr/BIN/openssl
+# whereas others are built --with-openssl=/usr/INCLUDE/openssl?
+THE_URLPATH=https://curl.haxx.se/download
+THE_DIRNAME=curl-7.64.0
+THE_TARBALL=${THE_DIRNAME}.tar.gz
+THE_OPTIONS="--disable-static --enable-thread --without-ca-bundle --with-openssl=/usr/bin/openssl"
+Download $THE_URLPATH/$THE_TARBALL
+Unpack $THE_TARBALL
+# I want word splitting on THE_OPTIONS, so disable shell check.
+# shellcheck disable=SC2086
+Build $THE_DIRNAME $THE_OPTIONS
 
 exit
 
@@ -144,19 +158,6 @@ THE_URLPATH=http://mirrors.gigenet.com/apache/santuario/c-library
 THE_DIRNAME=xml-security-c-1.7.2
 THE_TARBALL=${THE_DIRNAME}.tar.gz
 THE_OPTIONS="--without-xalan --disable-static --with-xerces=$SHIBSP_PREFIX"
-Download $THE_URLPATH/$THE_TARBALL
-Unpack $THE_TARBALL
-# I want word splitting on THE_OPTIONS, so disable shell check.
-# shellcheck disable=SC2086
-Build $THE_DIRNAME $THE_OPTIONS
-
-# http://curl.haxx.se/download/curl-7.30.0.tar.gz
-# Why is curl built --with-openssl=/usr/BIN/openssl
-# whereas others are built --with-openssl=/usr/INCLUDE/openssl?
-THE_URLPATH=http://curl.haxx.se/download/
-THE_DIRNAME=curl-7.30.0
-THE_TARBALL=${THE_DIRNAME}.tar.gz
-THE_OPTIONS="--disable-static --enable-thread --without-ca-bundle --with-openssl=/usr/bin/openssl"
 Download $THE_URLPATH/$THE_TARBALL
 Unpack $THE_TARBALL
 # I want word splitting on THE_OPTIONS, so disable shell check.
