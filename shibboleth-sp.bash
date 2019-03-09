@@ -1,6 +1,9 @@
 #!/bin/bash
 # @(#) Script to install shibboleth as non-root user
 
+# General build instructions for Shibboleth3:
+# https://wiki.shibboleth.net/confluence/display/SP3/LinuxBuild
+
 # Build and install shibboleth service provider as a non-root user. This is
 # based on a text "recipe" which wasn't completely documented, e.g. an
 # unspecified bug with shibboleth/boost.
@@ -102,7 +105,7 @@ cd "$LOCALROOT"				\
 
 # https://shibboleth.net/downloads/log4shib/latest/ currently points to
 # https://shibboleth.net/downloads/log4shib/latest/log4shib-2.0.0.tar.gz
-THE_URLPATH=https://shibboleth.net/downloads/log4shib/2.0.0/log4shib-2.0.0.tar.gz
+THE_URLPATH=https://shibboleth.net/downloads/log4shib/2.0.0
 THE_DIRNAME=log4shib-2.0.0
 THE_TARBALL=${THE_DIRNAME}.tar.gz
 THE_OPTIONS="--disable-static --disable-doxygen"
@@ -111,6 +114,17 @@ Unpack $THE_TARBALL
 # I want word splitting on THE_OPTIONS, so disable shell check.
 # shellcheck disable=SC2086
 Build $THE_DIRNAME $THE_OPTIONS
+
+
+# https://www.zlib.net/zlib-1.2.11.tar.gz
+THE_URLPATH=https://www.zlib.net
+THE_DIRNAME=zlib-1.2.11
+THE_TARBALL=${THE_DIRNAME}.tar.gz
+THE_OPTIONS=""
+Download $THE_URLPATH/$THE_TARBALL
+Unpack $THE_TARBALL
+Build $THE_DIRNAME $THE_OPTIONS
+
 
 exit
 
@@ -170,16 +184,6 @@ Unpack $THE_TARBALL
 # I want word splitting on THE_OPTIONS, so disable shell check.
 # shellcheck disable=SC2086
 Build $THE_DIRNAME $THE_OPTIONS
-
-# http://zlib.net/zlib-1.2.8.tar.gz
-THE_URLPATH=http://zlib.net
-THE_DIRNAME=zlib-1.2.8
-THE_TARBALL=${THE_DIRNAME}.tar.gz
-THE_OPTIONS=""
-Download $THE_URLPATH/$THE_TARBALL
-Unpack $THE_TARBALL
-Build $THE_DIRNAME $THE_OPTIONS
-
 
 # http://shibboleth.net/downloads/service-provider/latest/shibboleth-sp-2.6.0.tar.gz not building--dependencies?
 ### THE_URLPATH=http://shibboleth.net/downloads/service-provider/latest
