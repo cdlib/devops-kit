@@ -100,22 +100,25 @@ cd "$LOCALROOT"				\
       && unzip "$SRCDIR/$BOOSTZIP"
 
 
-# http://apache.mirrors.tds.net/xerces/c/3/sources/xerces-c-3.1.4.tar.gz
-THE_URLPATH=http://apache.mirrors.tds.net/xerces/c/3/sources
-THE_DIRNAME=xerces-c-3.1.4
+# https://shibboleth.net/downloads/log4shib/latest/ currently points to
+# https://shibboleth.net/downloads/log4shib/latest/log4shib-2.0.0.tar.gz
+THE_URLPATH=https://shibboleth.net/downloads/log4shib/2.0.0/log4shib-2.0.0.tar.gz
+THE_DIRNAME=log4shib-2.0.0
 THE_TARBALL=${THE_DIRNAME}.tar.gz
-THE_OPTIONS="--enable-netaccessor-socket"
+THE_OPTIONS="--disable-static --disable-doxygen"
 Download $THE_URLPATH/$THE_TARBALL
 Unpack $THE_TARBALL
 # I want word splitting on THE_OPTIONS, so disable shell check.
 # shellcheck disable=SC2086
 Build $THE_DIRNAME $THE_OPTIONS
 
-# http://shibboleth.net/downloads/log4shib/1.0.7/log4shib-1.0.7.tar.gz
-THE_URLPATH=http://shibboleth.net/downloads/log4shib/1.0.7
-THE_DIRNAME=log4shib-1.0.7
+exit
+
+# http://apache.mirrors.tds.net/xerces/c/3/sources/xerces-c-3.1.4.tar.gz
+THE_URLPATH=http://apache.mirrors.tds.net/xerces/c/3/sources
+THE_DIRNAME=xerces-c-3.1.4
 THE_TARBALL=${THE_DIRNAME}.tar.gz
-THE_OPTIONS="--disable-static --disable-doxygen"
+THE_OPTIONS="--enable-netaccessor-socket"
 Download $THE_URLPATH/$THE_TARBALL
 Unpack $THE_TARBALL
 # I want word splitting on THE_OPTIONS, so disable shell check.
