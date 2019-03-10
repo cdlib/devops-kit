@@ -166,13 +166,14 @@ Unpack $THE_TARBALL
 # shellcheck disable=SC2086
 Build $THE_DIRNAME $THE_OPTIONS
 
-exit
-
-# http://shibboleth.net/downloads/c++-opensaml/2.5.3/xmltooling-1.5.3.tar.gz
-THE_URLPATH=http://shibboleth.net/downloads/c++-opensaml/2.5.3
-THE_DIRNAME=xmltooling-1.5.3
+# https://shibboleth.net/downloads/c++-opensaml/3.0.0/xmltooling-3.0.3.tar.gz
+THE_URLPATH=https://shibboleth.net/downloads/c++-opensaml/3.0.0
+THE_DIRNAME=xmltooling-3.0.3
 THE_TARBALL=${THE_DIRNAME}.tar.gz
-THE_OPTIONS="--with-log4shib=$SHIBSP_PREFIX --with-curl=$SHIBSP_PREFIX --with-boost=$LOCALROOT/$BOOST_DIRNAME --with-openssl=/usr/include/openssl"
+THE_OPTIONS="--with-boost=$LOCALROOT/$BOOST_DIRNAME"
+# --with-log4shib, --with-curl, and --with-openssl are no longer
+# supported. All are replaced with the same PKG_CONFIG_PATH setting used in
+# xml-security-c, which is still exported.
 Download $THE_URLPATH/$THE_TARBALL
 Unpack $THE_TARBALL
 # I want word splitting on THE_OPTIONS, so disable shell check.
@@ -189,6 +190,8 @@ Unpack $THE_TARBALL
 # I want word splitting on THE_OPTIONS, so disable shell check.
 # shellcheck disable=SC2086
 Build $THE_DIRNAME $THE_OPTIONS
+
+exit
 
 # http://shibboleth.net/downloads/service-provider/latest/shibboleth-sp-2.6.0.tar.gz not building--dependencies?
 ### THE_URLPATH=http://shibboleth.net/downloads/service-provider/latest
