@@ -105,6 +105,8 @@ cd "$LOCALROOT"				\
 
 # https://shibboleth.net/downloads/log4shib/latest/ currently points to
 # https://shibboleth.net/downloads/log4shib/latest/log4shib-2.0.0.tar.gz
+# so use
+# https://shibboleth.net/downloads/log4shib/2.0.0/log4shib-2.0.0.tar.gz
 THE_URLPATH=https://shibboleth.net/downloads/log4shib/2.0.0
 THE_DIRNAME=log4shib-2.0.0
 THE_TARBALL=${THE_DIRNAME}.tar.gz
