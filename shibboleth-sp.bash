@@ -187,24 +187,20 @@ THE_TARBALL=${THE_DIRNAME}.tar.gz
 THE_OPTIONS="--with-boost=$LOCALROOT/$BOOST_DIRNAME"
 # --with-log4shib and --with-openssl are no longer supported. All are replaced
 # with the same PKG_CONFIG_PATH setting in xml-security-c, still exported.
-THE_OPTIONS="--with-log4shib=$SHIBSP_PREFIX --with-boost=$LOCALROOT/$BOOST_DIRNAME --with-openssl=/usr/include/openssl"
+THE_OPTIONS="--with-boost=$LOCALROOT/$BOOST_DIRNAME"
 Download $THE_URLPATH/$THE_TARBALL
 Unpack $THE_TARBALL
 # I want word splitting on THE_OPTIONS, so disable shell check.
 # shellcheck disable=SC2086
 Build $THE_DIRNAME $THE_OPTIONS
 
-exit
-
-# http://shibboleth.net/downloads/service-provider/latest/shibboleth-sp-2.6.0.tar.gz not building--dependencies?
-### THE_URLPATH=http://shibboleth.net/downloads/service-provider/latest
-### THE_DIRNAME=shibboleth-sp-2.6.0
-
-# http://shibboleth.net/downloads/service-provider/latest/shibboleth-sp-2.5.5.tar.gz not found, fix URLPATH
-THE_URLPATH=http://shibboleth.net/downloads/service-provider/2.5.5
-THE_DIRNAME=shibboleth-sp-2.5.5
+# https://shibboleth.net/downloads/service-provider/3.0.3/shibboleth-sp-3.0.3.tar.gz
+THE_URLPATH=https://shibboleth.net/downloads/service-provider/3.0.3
+THE_DIRNAME=shibboleth-sp-3.0.3
 THE_TARBALL=${THE_DIRNAME}.tar.gz
-THE_OPTIONS="--with-log4shib=$SHIBSP_PREFIX --with-boost=$LOCALROOT/$BOOST_DIRNAME"
+THE_OPTIONS="--with-boost=$LOCALROOT/$BOOST_DIRNAME"
+# --with-log4shib no longer supported. Use the same PKG_CONFIG_PATH setting
+# --from xml-security-c, still exported.
 Download $THE_URLPATH/$THE_TARBALL
 Unpack $THE_TARBALL
 # I want word splitting on THE_OPTIONS, so disable shell check.
