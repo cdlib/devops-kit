@@ -180,10 +180,13 @@ Unpack $THE_TARBALL
 # shellcheck disable=SC2086
 Build $THE_DIRNAME $THE_OPTIONS
 
-# http://shibboleth.net/downloads/c++-opensaml/2.5.3/opensaml-2.5.3.tar.gz
-THE_URLPATH=http://shibboleth.net/downloads/c++-opensaml/2.5.3
-THE_DIRNAME=opensaml-2.5.3
+# https://shibboleth.net/downloads/c++-opensaml/3.0.0/opensaml-3.0.0.tar.gz
+THE_URLPATH=https://shibboleth.net/downloads/c++-opensaml/3.0.0
+THE_DIRNAME=opensaml-3.0.0
 THE_TARBALL=${THE_DIRNAME}.tar.gz
+THE_OPTIONS="--with-boost=$LOCALROOT/$BOOST_DIRNAME"
+# --with-log4shib and --with-openssl are no longer supported. All are replaced
+# with the same PKG_CONFIG_PATH setting in xml-security-c, still exported.
 THE_OPTIONS="--with-log4shib=$SHIBSP_PREFIX --with-boost=$LOCALROOT/$BOOST_DIRNAME --with-openssl=/usr/include/openssl"
 Download $THE_URLPATH/$THE_TARBALL
 Unpack $THE_TARBALL
