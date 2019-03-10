@@ -151,18 +151,22 @@ Unpack $THE_TARBALL
 # shellcheck disable=SC2086
 Build $THE_DIRNAME $THE_OPTIONS
 
-exit
-
-# http://mirrors.gigenet.com/apache/santuario/c-library/xml-security-c-1.7.2.tar.gz
+# http://mirrors.gigenet.com/apache/santuario/c-library/xml-security-c-2.0.2.tar.gz
 THE_URLPATH=http://mirrors.gigenet.com/apache/santuario/c-library
-THE_DIRNAME=xml-security-c-1.7.2
+THE_DIRNAME=xml-security-c-2.0.2
 THE_TARBALL=${THE_DIRNAME}.tar.gz
-THE_OPTIONS="--without-xalan --disable-static --with-xerces=$SHIBSP_PREFIX"
+THE_OPTIONS="--without-xalan --disable-static"
+# --with-xerces is no longer an option for shib3; instead, use
+# PKG_CONFIG_PATH to tell xml-security-c where to find xerces.
+# This needs to be exported in order to work within Build function.
+export PKG_CONFIG_PATH="$SHIBSP_PREFIX/lib/pkgconfig"
 Download $THE_URLPATH/$THE_TARBALL
 Unpack $THE_TARBALL
 # I want word splitting on THE_OPTIONS, so disable shell check.
 # shellcheck disable=SC2086
 Build $THE_DIRNAME $THE_OPTIONS
+
+exit
 
 # http://shibboleth.net/downloads/c++-opensaml/2.5.3/xmltooling-1.5.3.tar.gz
 THE_URLPATH=http://shibboleth.net/downloads/c++-opensaml/2.5.3
