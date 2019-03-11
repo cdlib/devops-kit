@@ -1,6 +1,9 @@
 #!/bin/bash
 # @(#) Script to install shibboleth as non-root user
 
+# General build instructions for Shibboleth3:
+# https://wiki.shibboleth.net/confluence/display/SP3/LinuxBuild
+
 # Build and install shibboleth service provider as a non-root user. This is
 # based on a text "recipe" which wasn't completely documented, e.g. an
 # unspecified bug with shibboleth/boost.
@@ -100,20 +103,12 @@ cd "$LOCALROOT"				\
       && unzip "$SRCDIR/$BOOSTZIP"
 
 
-# http://apache.mirrors.tds.net/xerces/c/3/sources/xerces-c-3.1.4.tar.gz
-THE_URLPATH=http://apache.mirrors.tds.net/xerces/c/3/sources
-THE_DIRNAME=xerces-c-3.1.4
-THE_TARBALL=${THE_DIRNAME}.tar.gz
-THE_OPTIONS="--enable-netaccessor-socket"
-Download $THE_URLPATH/$THE_TARBALL
-Unpack $THE_TARBALL
-# I want word splitting on THE_OPTIONS, so disable shell check.
-# shellcheck disable=SC2086
-Build $THE_DIRNAME $THE_OPTIONS
-
-# http://shibboleth.net/downloads/log4shib/1.0.7/log4shib-1.0.7.tar.gz
-THE_URLPATH=http://shibboleth.net/downloads/log4shib/1.0.7
-THE_DIRNAME=log4shib-1.0.7
+# https://shibboleth.net/downloads/log4shib/latest/ currently points to
+# https://shibboleth.net/downloads/log4shib/latest/log4shib-2.0.0.tar.gz
+# so use
+# https://shibboleth.net/downloads/log4shib/2.0.0/log4shib-2.0.0.tar.gz
+THE_URLPATH=https://shibboleth.net/downloads/log4shib/2.0.0
+THE_DIRNAME=log4shib-2.0.0
 THE_TARBALL=${THE_DIRNAME}.tar.gz
 THE_OPTIONS="--disable-static --disable-doxygen"
 Download $THE_URLPATH/$THE_TARBALL
@@ -122,22 +117,23 @@ Unpack $THE_TARBALL
 # shellcheck disable=SC2086
 Build $THE_DIRNAME $THE_OPTIONS
 
-# http://mirrors.gigenet.com/apache/santuario/c-library/xml-security-c-1.7.2.tar.gz
-THE_URLPATH=http://mirrors.gigenet.com/apache/santuario/c-library
-THE_DIRNAME=xml-security-c-1.7.2
+# https://www.zlib.net/zlib-1.2.11.tar.gz
+THE_URLPATH=https://www.zlib.net
+THE_DIRNAME=zlib-1.2.11
 THE_TARBALL=${THE_DIRNAME}.tar.gz
-THE_OPTIONS="--without-xalan --disable-static --with-xerces=$SHIBSP_PREFIX"
+THE_OPTIONS=""
 Download $THE_URLPATH/$THE_TARBALL
 Unpack $THE_TARBALL
-# I want word splitting on THE_OPTIONS, so disable shell check.
-# shellcheck disable=SC2086
 Build $THE_DIRNAME $THE_OPTIONS
 
-# http://curl.haxx.se/download/curl-7.30.0.tar.gz
+# shibboleth.net suggests building openssl here
+# but it's already done?
+
+# https://curl.haxx.se/download/curl-7.64.0.tar.gz
 # Why is curl built --with-openssl=/usr/BIN/openssl
 # whereas others are built --with-openssl=/usr/INCLUDE/openssl?
-THE_URLPATH=http://curl.haxx.se/download/
-THE_DIRNAME=curl-7.30.0
+THE_URLPATH=https://curl.haxx.se/download
+THE_DIRNAME=curl-7.64.0
 THE_TARBALL=${THE_DIRNAME}.tar.gz
 THE_OPTIONS="--disable-static --enable-thread --without-ca-bundle --with-openssl=/usr/bin/openssl"
 Download $THE_URLPATH/$THE_TARBALL
@@ -146,47 +142,67 @@ Unpack $THE_TARBALL
 # shellcheck disable=SC2086
 Build $THE_DIRNAME $THE_OPTIONS
 
-# http://shibboleth.net/downloads/c++-opensaml/2.5.3/xmltooling-1.5.3.tar.gz
-THE_URLPATH=http://shibboleth.net/downloads/c++-opensaml/2.5.3
-THE_DIRNAME=xmltooling-1.5.3
+# http://apache.mirrors.tds.net/xerces/c/3/sources/xerces-c-3.2.2.tar.gz
+THE_URLPATH=http://apache.mirrors.tds.net/xerces/c/3/sources
+THE_DIRNAME=xerces-c-3.2.2
 THE_TARBALL=${THE_DIRNAME}.tar.gz
-THE_OPTIONS="--with-log4shib=$SHIBSP_PREFIX --with-curl=$SHIBSP_PREFIX --with-boost=$LOCALROOT/$BOOST_DIRNAME --with-openssl=/usr/include/openssl"
+THE_OPTIONS="--enable-netaccessor-socket"
 Download $THE_URLPATH/$THE_TARBALL
 Unpack $THE_TARBALL
 # I want word splitting on THE_OPTIONS, so disable shell check.
 # shellcheck disable=SC2086
 Build $THE_DIRNAME $THE_OPTIONS
 
-# http://shibboleth.net/downloads/c++-opensaml/2.5.3/opensaml-2.5.3.tar.gz
-THE_URLPATH=http://shibboleth.net/downloads/c++-opensaml/2.5.3
-THE_DIRNAME=opensaml-2.5.3
+# http://mirrors.gigenet.com/apache/santuario/c-library/xml-security-c-2.0.2.tar.gz
+THE_URLPATH=http://mirrors.gigenet.com/apache/santuario/c-library
+THE_DIRNAME=xml-security-c-2.0.2
 THE_TARBALL=${THE_DIRNAME}.tar.gz
-THE_OPTIONS="--with-log4shib=$SHIBSP_PREFIX --with-boost=$LOCALROOT/$BOOST_DIRNAME --with-openssl=/usr/include/openssl"
+THE_OPTIONS="--without-xalan --disable-static"
+# --with-xerces is no longer an option for shib3; instead, use
+# PKG_CONFIG_PATH to tell xml-security-c where to find xerces.
+# This needs to be exported in order to work within Build function.
+export PKG_CONFIG_PATH="$SHIBSP_PREFIX/lib/pkgconfig"
 Download $THE_URLPATH/$THE_TARBALL
 Unpack $THE_TARBALL
 # I want word splitting on THE_OPTIONS, so disable shell check.
 # shellcheck disable=SC2086
 Build $THE_DIRNAME $THE_OPTIONS
 
-# http://zlib.net/zlib-1.2.8.tar.gz
-THE_URLPATH=http://zlib.net
-THE_DIRNAME=zlib-1.2.8
+# https://shibboleth.net/downloads/c++-opensaml/3.0.0/xmltooling-3.0.3.tar.gz
+THE_URLPATH=https://shibboleth.net/downloads/c++-opensaml/3.0.0
+THE_DIRNAME=xmltooling-3.0.3
 THE_TARBALL=${THE_DIRNAME}.tar.gz
-THE_OPTIONS=""
+THE_OPTIONS="--with-boost=$LOCALROOT/$BOOST_DIRNAME"
+# --with-log4shib, --with-curl, and --with-openssl are no longer
+# supported. All are replaced with the same PKG_CONFIG_PATH setting used in
+# xml-security-c, which is still exported.
 Download $THE_URLPATH/$THE_TARBALL
 Unpack $THE_TARBALL
+# I want word splitting on THE_OPTIONS, so disable shell check.
+# shellcheck disable=SC2086
 Build $THE_DIRNAME $THE_OPTIONS
 
-
-# http://shibboleth.net/downloads/service-provider/latest/shibboleth-sp-2.6.0.tar.gz not building--dependencies?
-### THE_URLPATH=http://shibboleth.net/downloads/service-provider/latest
-### THE_DIRNAME=shibboleth-sp-2.6.0
-
-# http://shibboleth.net/downloads/service-provider/latest/shibboleth-sp-2.5.5.tar.gz not found, fix URLPATH
-THE_URLPATH=http://shibboleth.net/downloads/service-provider/2.5.5
-THE_DIRNAME=shibboleth-sp-2.5.5
+# https://shibboleth.net/downloads/c++-opensaml/3.0.0/opensaml-3.0.0.tar.gz
+THE_URLPATH=https://shibboleth.net/downloads/c++-opensaml/3.0.0
+THE_DIRNAME=opensaml-3.0.0
 THE_TARBALL=${THE_DIRNAME}.tar.gz
-THE_OPTIONS="--with-log4shib=$SHIBSP_PREFIX --with-boost=$LOCALROOT/$BOOST_DIRNAME"
+THE_OPTIONS="--with-boost=$LOCALROOT/$BOOST_DIRNAME"
+# --with-log4shib and --with-openssl are no longer supported. All are replaced
+# with the same PKG_CONFIG_PATH setting in xml-security-c, still exported.
+THE_OPTIONS="--with-boost=$LOCALROOT/$BOOST_DIRNAME"
+Download $THE_URLPATH/$THE_TARBALL
+Unpack $THE_TARBALL
+# I want word splitting on THE_OPTIONS, so disable shell check.
+# shellcheck disable=SC2086
+Build $THE_DIRNAME $THE_OPTIONS
+
+# https://shibboleth.net/downloads/service-provider/3.0.3/shibboleth-sp-3.0.3.tar.gz
+THE_URLPATH=https://shibboleth.net/downloads/service-provider/3.0.3
+THE_DIRNAME=shibboleth-sp-3.0.3
+THE_TARBALL=${THE_DIRNAME}.tar.gz
+THE_OPTIONS="--with-boost=$LOCALROOT/$BOOST_DIRNAME"
+# --with-log4shib no longer supported. Use the same PKG_CONFIG_PATH setting
+# --from xml-security-c, still exported.
 Download $THE_URLPATH/$THE_TARBALL
 Unpack $THE_TARBALL
 # I want word splitting on THE_OPTIONS, so disable shell check.
