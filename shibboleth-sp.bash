@@ -168,9 +168,9 @@ Unpack $THE_TARBALL
 # shellcheck disable=SC2086
 Build $THE_DIRNAME $THE_OPTIONS
 
-# https://shibboleth.net/downloads/c++-opensaml/3.0.0/xmltooling-3.0.3.tar.gz
-THE_URLPATH=https://shibboleth.net/downloads/c++-opensaml/3.0.0
-THE_DIRNAME=xmltooling-3.0.3
+# https://shibboleth.net/downloads/c++-opensaml/3.0.1/xmltooling-3.0.4.tar.gz
+THE_URLPATH=https://shibboleth.net/downloads/c++-opensaml/3.0.1
+THE_DIRNAME=xmltooling-3.0.4
 THE_TARBALL=${THE_DIRNAME}.tar.gz
 THE_OPTIONS="--with-boost=$LOCALROOT/$BOOST_DIRNAME"
 # --with-log4shib, --with-curl, and --with-openssl are no longer
@@ -182,9 +182,9 @@ Unpack $THE_TARBALL
 # shellcheck disable=SC2086
 Build $THE_DIRNAME $THE_OPTIONS
 
-# https://shibboleth.net/downloads/c++-opensaml/3.0.0/opensaml-3.0.0.tar.gz
-THE_URLPATH=https://shibboleth.net/downloads/c++-opensaml/3.0.0
-THE_DIRNAME=opensaml-3.0.0
+# https://shibboleth.net/downloads/c++-opensaml/3.0.1/opensaml-3.0.1.tar.gz
+THE_URLPATH=https://shibboleth.net/downloads/c++-opensaml/3.0.1
+THE_DIRNAME=opensaml-3.0.1
 THE_TARBALL=${THE_DIRNAME}.tar.gz
 THE_OPTIONS="--with-boost=$LOCALROOT/$BOOST_DIRNAME"
 # --with-log4shib and --with-openssl are no longer supported. All are replaced
@@ -196,9 +196,9 @@ Unpack $THE_TARBALL
 # shellcheck disable=SC2086
 Build $THE_DIRNAME $THE_OPTIONS
 
-# https://shibboleth.net/downloads/service-provider/3.0.3/shibboleth-sp-3.0.3.tar.gz
-THE_URLPATH=https://shibboleth.net/downloads/service-provider/3.0.3
-THE_DIRNAME=shibboleth-sp-3.0.3
+# https://shibboleth.net/downloads/service-provider/3.0.4/shibboleth-sp-3.0.4.tar.gz
+THE_URLPATH=https://shibboleth.net/downloads/service-provider/3.0.4
+THE_DIRNAME=shibboleth-sp-3.0.4
 THE_TARBALL=${THE_DIRNAME}.tar.gz
 THE_OPTIONS="--with-boost=$LOCALROOT/$BOOST_DIRNAME"
 # --with-log4shib no longer supported. Use the same PKG_CONFIG_PATH setting
