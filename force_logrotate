@@ -1,0 +1,42 @@
+#!/bin/sh
+# @(#) Force log rotation on the the current UC3 server
+
+# There is a bug in logrotate which prevents newly-added files from being
+# rotated. The workaround is to use force log rotation when new files are
+# added to the list. Once a file has been successfully rotated, it works
+# normally thereafter.
+
+# See https://confluence.ucop.edu/display/UC3/Log+Rotation
+
+# This needs to be run as the appropriate role account. Check for the
+# logrotate configuration file within $HOME -- if not found, bail out.
+config_dir=$HOME/etc
+config_file=$config_dir/logrotate.conf
+# The status file might not exist yet. Don't check for it, but we will need
+# this variable for log rotation.
+state_file=$config_dir/logrotate.status
+if [ ! -f "$config_file" ]; then
+    >&2 echo "File '$config_file' not found, aborting"
+    exit 1
+fi
+
+# Log file for this task:
+task_log=$HOME/force_logrotate-$(hostname)-$(date +%Y%m%d).log
+
+# Send all subsequent output (stderr and stdout) to the task_log file.
+# If redirection fails, abort with error message.
+if ! exec >>"$task_log" 2>&1; then
+   >&2 echo "error"
+   exit 1
+fi
+
+echo "Forcing log rotation at $(date)"
+echo "Disk space currently being used:"
+df -k
+echo
+/usr/sbin/logrotate -f -v --state "$state_file" "$config_file"
+echo
+echo "Post-rotation disk space usage:"
+df -k
+
+exit 0
